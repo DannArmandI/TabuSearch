@@ -1,130 +1,116 @@
-from bidir import BidirProblem
-from tabu import TabuProblem
-import timeit
-import time
-import random
-import numpy as np
 
 
-def getInstances(name):
-    """ Returns the jobshop instances from a file with given name """
-
-    def getMP(M):
-        tail = []
-        for row in [x.split(" ") for x in M]:
-            tail.append([int(x.strip()) for x in row if x])
-        mac = []
-        for row in tail:
-            mac.append(row[::2])
-        proc = []
-        for row in tail:
-            proc.append(row[1::2])
-
-        return mac, proc
-
-    name += '.txt'
-    with open(name, 'r') as f:
-        l = f.read()
-    l = l.split("\n")
-    while l:
-        i = l.pop(0)
-        if not l:
-            continue
-        nBMac = int([x for x in i.split(" ") if x][0])
-        yield getMP(l[:nBMac])
-        l = l[nBMac:]
+# from array import array
 
 
-def mainBidir(begin=0, end=40, it=5, c=3, inst='law'):
-    if inst == 'law':
-        data = law
-        opt = opt_law
-    elif inst == 'yam':
-        data = yam
-        opt = opt_yam
-    else:
-        raise ValueError('unknown instance')
-    avg_Z = []
-
-    for i, inst in enumerate(data[begin:end]):
-        solution_best = float('inf')
-        mac, proc = inst
-        x = BidirProblem(mac, proc)
-        m = x.NbMachines()
-        n = len(mac)
-        dt = []
-        for r in range(it):
-            x = BidirProblem(mac, proc, c=c)
-            t1 = time.time()
-            x.bidir()
-            t2 = time.time()
-            dt.append(t2-t1)
-            solution = x.get_cost()
-            if solution < solution_best:
-                solution_best = solution
-        optimum = opt_law[i+begin]
-        Delta = (solution_best-optimum)/optimum*100
-        avg_Z.append(Delta)
-        dt = sum(dt)/len(dt)
-        print("LA%02d: %-4d (opt: %-4d), Z=%.02f, t=%f" %
-              (i+begin+1, solution_best, optimum, Delta, dt))
-        # LATEX printing:
-        #print("LA%02d & %d & %d & %d & %d & %.02f & %.04f \\\\" % (i+begin+1, n,m, optimum, solution_best, Delta, dt))
-    avg_Z = sum(avg_Z)/len(avg_Z)
-
-    return avg_Z, dt
 
 
-def mainTabu(begin=0, end=40, it=5, c=3):
-    avg_Z = []
-    for i, inst in enumerate(law[begin:end]):
-        solution_best = float('inf')
-        mac, proc = inst
-        dt = []
-        x = BidirProblem(mac, proc)
-        m = x.NbMachines()
-        n = len(mac)
-        bsols = []
-        for r in range(it*5):
-            x = BidirProblem(mac, proc, c=c)
-            x.bidir()
-            bsols.append((x.get_cost(), x.E2))
-        es = sorted(bsols, key=lambda x: x[0])
-        for r in range(it):
-            x = TabuProblem(mac, proc, es[r][1])
-            t1 = time.time()
-            x.TB()
-            t2 = time.time()
-            dt.append(t2-t1)
-            solution = x.get_cost()
-            if solution < solution_best:
-                solution_best = solution
-        optimum = opt_law[i+begin]
-        Delta = (solution_best-optimum)/optimum*100
-        avg_Z.append(Delta)
-        dt = sum(dt)/len(dt)
-        print("LA%02d: %d (opt: %d), Z=%02f" %
-              (i+begin+1, solution_best, optimum, Delta))
-        # LATEX printing
-        #print("LA%02d & %d & %d & %d & %d & %.02f & %d & %.04f \\\\" % (i+begin+1, n,m, optimum, solution_best, Delta, es[r][0], dt))
+class ColumnLayout:
 
-    return avg_Z
+    Index = 0
+    Cost = 0
+    ActiveRows=[]
+    
+
+# class Scp:
+
+#     Columns:[ColumnLayout]
+#     Rows = []
 
 
-# absolut minima for lawrence instances
-opt_law = [666, 655, 597, 590, 593, 926, 890, 863, 951, 958, 1222, 1039, 1150, 1292, 1207, 945, 784, 848, 842, 902,
-           1046, 927, 1032, 935, 977, 1218, 1235, 1216, 1152, 1355, 1784, 1850, 1719, 1721, 1888, 1268, 1397, 1196, 1233, 1233]
-# yamada optima aren't the proven optimal, but these are the best found in the paper
-opt_yam = [967, 945, 951, 1052]
-law = tuple(getInstances('data/lawrence'))
-yam = tuple(getInstances('data/yamada'))
+class Instance:
 
+    Column = 0
+    Row = 0
+    lista=[]
+    Columns = [ColumnLayout()]
+    Columns.clear()
+    # aux=ColumnLayout()
+    # aux.Index=1
+    # aux.Cost=2
+    # aux.ActiveRows=[]
+    # # aux2=ColumnLayout()
+    # Columns.append(aux)
+    # aux2=ColumnLayout()
+    # aux2.Index=3
+    # aux2.Cost=2
+    # aux2.ActiveRows=[]
+    # Columns.append(aux2)
+    # aux2.ActiveRows.append(7)
+    # Columns[0].ActiveRows=[2]
+    # Columns[1].ActiveRows=[4]
+    # print()
+    # Rows = array()
+    Instancia = open('instance/scp41.txt')
 
-def main():
-    mainBidir(c=2, it=10)
-    print("Empezo Tabu")
-    mainTabu(c=2, it=5)
+    def getInstance(self):
+        cont = 0
+        # print(Instancia.read())
+        # Instancia = Instancia.read()
+        Lines = self.Instancia.readline().split(' ')
+        # line = lines.split(' ')
+        # for line in lines:
+        self.Row = int(Lines[1])
+        self.Column = int(Lines[2])
+        # print(Row)
+        # print(Column)
+        self.getColumns()
+        self.getActiveRow()
+        # print(self.Columns[1].Index)
+        # print(self.Columns[3].Index)
+        # print(self.Columns[4].Index)
+        # if (self.Columns[0].ActiveRows==self.Columns[1].ActiveRows):
+        #     print('Eooooooo')
+        for column in self.Columns:
+            print('Indice:', column.Index, ' Costo:', column.Cost, ' Active Rows: ',column.ActiveRows)
+        #     # print(cont)
+        #     # cont=cont+1
+        #     print(column)
+# print(column.Cost)
 
+    def getColumns(self):
+        cont = 0
+        # aux:
+        for Column in range(self.Column):
+            Line = self.Instancia.readline()
+            Elements = Line.split(' ')
+            for Element in Elements:
+                if Element.isdigit():
+                    # self.Columns.append(Element)
+                    # Aux:ColumnLayout
+                    Aux = ColumnLayout()
+                    cont = cont+1
+                    Aux.Index = cont
+                    Aux.Cost = int(Element)
+                    Aux.ActiveRows=[]
+                    # print(Aux.Cost)cl
+                    # self.Columns.__add__()
+                    self.Columns.append(Aux)
+                    # self.addColumns(Aux)
+                    # self.Columns.append(Aux)
+                    # print(self.Columns[cont].Index)
+                    # self.Columns[Column].Index = Column+1
+                    # self.Columns[Column].Cost = int(Element)
+            if cont == self.Column:
+                break
 
-if __name__ == '__main__':
-    main()
+    def getActiveRow(self):
+        for Row in range(200):
+            Line = self.Instancia.readline()
+            cantColumns = int(Line.split(' ')[1])
+            # print(cantColumns)
+            cont = 0
+            while cont < cantColumns:
+                Line = self.Instancia.readline()
+                Elements=Line.split(' ')
+                for Element in Elements:
+                    if Element.isdigit():
+                        row=Row+1
+                        cont=cont+1
+                        self.Columns[int(Element)-1].ActiveRows.append(row)
+                        print('Adding Row ',row , ' To ',Element)
+    
+
+if __name__ == "__main__":
+    Instancia = Instance()
+    Instancia.getInstance()
