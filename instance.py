@@ -1,16 +1,12 @@
 
 
-# from array import array
-
-
-
 
 class ColumnLayout:
 
-    Index = 0
-    Cost = 0
-    ActiveRows=[]
-    
+    index = 0
+    cost = 0
+    active_rows = []
+
 
 # class Scp:
 
@@ -20,97 +16,82 @@ class ColumnLayout:
 
 class Instance:
 
-    Column = 0
-    Row = 0
-    lista=[]
-    Columns = [ColumnLayout()]
-    Columns.clear()
-    # aux=ColumnLayout()
-    # aux.Index=1
-    # aux.Cost=2
-    # aux.ActiveRows=[]
-    # # aux2=ColumnLayout()
-    # Columns.append(aux)
-    # aux2=ColumnLayout()
-    # aux2.Index=3
-    # aux2.Cost=2
-    # aux2.ActiveRows=[]
-    # Columns.append(aux2)
-    # aux2.ActiveRows.append(7)
-    # Columns[0].ActiveRows=[2]
-    # Columns[1].ActiveRows=[4]
-    # print()
-    # Rows = array()
-    Instancia = open('instance/scp41.txt')
+    column = 0
+    row = 0
+    lista = []
+    columns = [ColumnLayout()]
+    columns.clear()
+    instancia = open('instance/scp41.txt', encoding='UTF-8')
 
-    def getInstance(self):
-        cont = 0
+    def set_instance(self):
+        # cont = 0
         # print(Instancia.read())
         # Instancia = Instancia.read()
-        Lines = self.Instancia.readline().split(' ')
+        lines = self.instancia.readline().split(' ')
         # line = lines.split(' ')
         # for line in lines:
-        self.Row = int(Lines[1])
-        self.Column = int(Lines[2])
+        self.row = int(lines[1])
+        self.column = int(lines[2])
         # print(Row)
         # print(Column)
-        self.getColumns()
-        self.getActiveRow()
+        self.set_columns()
+        self.set_rows()
         # print(self.Columns[1].Index)
         # print(self.Columns[3].Index)
         # print(self.Columns[4].Index)
         # if (self.Columns[0].ActiveRows==self.Columns[1].ActiveRows):
         #     print('Eooooooo')
-        for column in self.Columns:
-            print('Indice:', column.Index, ' Costo:', column.Cost, ' Active Rows: ',column.ActiveRows)
+        for column in self.columns:
+            print('Indice:', column.index, ' Costo:', column.cost,
+                  ' Active Rows: ', column.active_rows)
         #     # print(cont)
         #     # cont=cont+1
         #     print(column)
 # print(column.Cost)
 
-    def getColumns(self):
+    def set_columns(self):
         cont = 0
         # aux:
-        for Column in range(self.Column):
-            Line = self.Instancia.readline()
-            Elements = Line.split(' ')
-            for Element in Elements:
-                if Element.isdigit():
+        while 1:
+            line = self.instancia.readline()
+            elements = line.split(' ')
+            for element in elements:
+                if element.isdigit():
                     # self.Columns.append(Element)
                     # Aux:ColumnLayout
-                    Aux = ColumnLayout()
+                    aux = ColumnLayout()
                     cont = cont+1
-                    Aux.Index = cont
-                    Aux.Cost = int(Element)
-                    Aux.ActiveRows=[]
+                    aux.index = cont
+                    aux.cost = int(element)
+                    aux.active_rows = []
                     # print(Aux.Cost)cl
                     # self.Columns.__add__()
-                    self.Columns.append(Aux)
+                    self.columns.append(aux)
                     # self.addColumns(Aux)
                     # self.Columns.append(Aux)
                     # print(self.Columns[cont].Index)
                     # self.Columns[Column].Index = Column+1
                     # self.Columns[Column].Cost = int(Element)
-            if cont == self.Column:
+            if cont == self.column:
                 break
 
-    def getActiveRow(self):
-        for Row in range(200):
-            Line = self.Instancia.readline()
-            cantColumns = int(Line.split(' ')[1])
+    def set_rows(self):
+        for row in range(200):
+            line = self.instancia.readline()
+            cant_columns = int(line.split(' ')[1])
             # print(cantColumns)
             cont = 0
-            while cont < cantColumns:
-                Line = self.Instancia.readline()
-                Elements=Line.split(' ')
-                for Element in Elements:
-                    if Element.isdigit():
-                        row=Row+1
-                        cont=cont+1
-                        self.Columns[int(Element)-1].ActiveRows.append(row)
-                        print('Adding Row ',row , ' To ',Element)
-    
+            while cont < cant_columns:
+                line = self.instancia.readline()
+                elements = line.split(' ')
+                for element in elements:
+                    if element.isdigit():
+                        row_aux = row+1
+                        cont = cont+1
+                        self.columns[int(element)-1].active_rows.append(row_aux)
+                        print('Adding Row ', row, ' To ', element)
+
 
 if __name__ == "__main__":
-    Instancia = Instance()
-    Instancia.getInstance()
+    instancia = Instance()
+    instancia.set_instance()

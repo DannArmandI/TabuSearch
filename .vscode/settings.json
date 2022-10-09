@@ -2,5 +2,7 @@
     "python.analysis.typeCheckingMode": "basic",
     "python.autoComplete.extraPaths": [
     ],
-    "python.analysis.extraPaths": []
+    "python.analysis.extraPaths": [],
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }
