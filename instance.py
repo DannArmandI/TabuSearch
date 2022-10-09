@@ -1,8 +1,8 @@
-
+" Clases para cargar y almacenar la instancia "
 
 
 class ColumnLayout:
-
+    " Clases para cargar y almacenar la instancia "
     index = 0
     cost = 0
     active_rows = []
@@ -15,7 +15,7 @@ class ColumnLayout:
 
 
 class Instance:
-
+    " Clases para cargar y almacenar la instancia "
     column = 0
     row = 0
     lista = []
@@ -24,6 +24,7 @@ class Instance:
     instancia = open('instance/scp41.txt', encoding='UTF-8')
 
     def set_instance(self):
+        " Clases para cargar y almacenar la instancia "
         # cont = 0
         # print(Instancia.read())
         # Instancia = Instancia.read()
@@ -50,6 +51,7 @@ class Instance:
 # print(column.Cost)
 
     def set_columns(self):
+        " Clases para cargar y almacenar la instancia "
         cont = 0
         # aux:
         while 1:
@@ -76,6 +78,7 @@ class Instance:
                 break
 
     def set_rows(self):
+        " Clases para cargar y almacenar la instancia "
         for row in range(200):
             line = self.instancia.readline()
             cant_columns = int(line.split(' ')[1])
@@ -88,10 +91,6 @@ class Instance:
                     if element.isdigit():
                         row_aux = row+1
                         cont = cont+1
-                        self.columns[int(element)-1].active_rows.append(row_aux)
+                        self.columns[int(element) -
+                                     1].active_rows.append(row_aux)
                         print('Adding Row ', row, ' To ', element)
-
-
-if __name__ == "__main__":
-    instancia = Instance()
-    instancia.set_instance()
