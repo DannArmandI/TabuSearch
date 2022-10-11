@@ -8,11 +8,6 @@ class ColumnLayout:
     active_rows = []
 
 
-# class Scp:
-
-#     Columns:[ColumnLayout]
-#     Rows = []
-
 
 class Instance:
     " Clases para cargar y almacenar la instancia "
