@@ -4,5 +4,6 @@
     ],
     "python.analysis.extraPaths": [],
     "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
+    "python.linting.enabled": true,
+    "python.linting.pycodestyleEnabled": false
 }

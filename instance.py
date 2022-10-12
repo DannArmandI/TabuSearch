@@ -8,12 +8,10 @@ class ColumnLayout:
     active_rows = []
 
 
-
 class Instance:
     " Clases para cargar y almacenar la instancia "
     column = 0
     row = 0
-    lista = []
     columns = [ColumnLayout()]
     columns.clear()
     instancia = open('instance/scp41.txt', encoding='UTF-8')
@@ -37,9 +35,6 @@ class Instance:
         # print(self.Columns[4].Index)
         # if (self.Columns[0].ActiveRows==self.Columns[1].ActiveRows):
         #     print('Eooooooo')
-        for column in self.columns:
-            print('Indice:', column.index, ' Costo:', column.cost,
-                  ' Active Rows: ', column.active_rows)
         #     # print(cont)
         #     # cont=cont+1
         #     print(column)
@@ -88,4 +83,10 @@ class Instance:
                         cont = cont+1
                         self.columns[int(element) -
                                      1].active_rows.append(row_aux)
-                        print('Adding Row ', row, ' To ', element)
+                        # print('Adding Row ', row, ' To ', element)
+
+    def print_instance(self):
+        "asdasd"
+        for column in self.columns:
+            print('Indice:', column.index, ' Costo:', column.cost,
+                  ' Active Rows: ', column.active_rows)
