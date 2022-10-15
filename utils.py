@@ -38,7 +38,7 @@ def neighbour_analize(instance, best_solution, neighbour, repair_method):
     # print(local_best.columns)
     if local_best.columns == best_solution.columns:
         print('bucle encontrado')
-        # neighbour_analize(instance, best_solution, neighbour,'simple_repair')
+        return True
     local_best.copy(best_solution)
     # print(best_solution.columns)
 
