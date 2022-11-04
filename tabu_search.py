@@ -1,4 +1,4 @@
-"Genera una solucion random"
+"Aqui inicia el proyecto"
 
 import time
 from instance import Instance
@@ -12,8 +12,6 @@ def tabu_search():
     best_solution = Solution()
     neighbour = Solution()
     best_solution.columns = random_sol()
-    # neighbour.columns=random_sol()
-    # rows=[0]*200
     objetive_funtion(instance, best_solution)
     print('Initial Rows: ', best_solution.rows)
     print('Initial Columns: ', best_solution.columns)
@@ -22,7 +20,7 @@ def tabu_search():
     print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
     print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
     flag_repair = False
-    for _ in range(500):
+    for _ in range(600):
         if flag_repair:
             flag_repair = neighbour_analize(
                 instance, best_solution, neighbour, 1)
@@ -33,7 +31,6 @@ def tabu_search():
     print('Columns: ', best_solution.columns)
     print('Is covered: ', is_covered(best_solution.rows)[0])
     print('Fitness :', best_solution.fitness)
-    #     pass
 
 
 if __name__ == "__main__":
