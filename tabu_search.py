@@ -2,7 +2,7 @@
 
 import time
 from instance import Instance
-from utils import is_covered, neighbour_analize, objetive_funtion , random_sol , Solution
+from utils import is_covered, neighbour_analize, objetive_funtion, random_sol, Solution
 
 
 def tabu_search():
@@ -22,11 +22,13 @@ def tabu_search():
     print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
     print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
     flag_repair = False
-    for i in range(500):
+    for _ in range(500):
         if flag_repair:
-            flag_repair = neighbour_analize(instance, best_solution, neighbour,1)
+            flag_repair = neighbour_analize(
+                instance, best_solution, neighbour, 1)
         else:
-            flag_repair = neighbour_analize(instance, best_solution, neighbour,0)
+            flag_repair = neighbour_analize(
+                instance, best_solution, neighbour, 0)
         # print(best_solution.rows)
         # print(rows)
     # print(best_solution.rows)

@@ -9,25 +9,19 @@ class Solution:
     columns = [0]*1000
     fitness = 0
 
-    def copy(self, copia):
-        "asdasd"
-        copia.columns = self.columns.copy()
-        copia.rows = self.rows.copy()
-        copia.fitness = self.fitness
-
     def set(self, aux):
         "asdasd"
         self.columns = aux.columns.copy()
-        self.columns = aux.rows.copy()
-        self.fitness = aux.fitness.copy()
+        self.rows = aux.rows.copy()
+        self.fitness = aux.fitness
 
 
 def neighbour_analize(instance, best_solution, neighbour, repair_flag):
     "asd"
     local_best = Solution()
-    best_solution.copy(local_best)
+    local_best.set(best_solution)
     for i in range(999, -1, -1):
-        best_solution.copy(neighbour)
+        neighbour.set(best_solution)
         if neighbour.columns[i] == 0:
             continue
         else:
@@ -36,30 +30,41 @@ def neighbour_analize(instance, best_solution, neighbour, repair_flag):
         covered_flag, missing_rows = objetive_funtion(instance, neighbour)
         if not covered_flag:
             if repair_flag:
-                print('solucion reparada: ')
+                # print('solucion reparada')
                 repair_solution(instance, neighbour, missing_rows)
-            continue
-        else:
-            neighbour.copy(local_best)
+            else:
+                continue
+        if local_best.fitness >= neighbour.fitness :
+            local_best.set(neighbour)
+            if repair_flag:
+                continue
             break
 
     if local_best.columns == best_solution.columns:
         # print('bucle encontrado')
         return True
-    local_best.copy(best_solution)
+    best_solution.set(local_best)
 
 
 def repair_solution(instance, neighbour, missing_rows):
     "asdasd"
-    while missing_rows:
-        for i in enumerate(neighbour.columns):
-            if neighbour.columns[i]:
-                continue
-            else:
-                finded_rows=[x for x in instance.columns[i].active_rows if x in missing_rows]
-                if finded_rows:  
-                    neighbour.columns[i] = 1
-                
+    for (i, column) in enumerate(neighbour.columns):
+        if not missing_rows:
+            break
+        if column:
+            continue
+        else:
+            finded_rows = [
+                x for x in instance.columns[i].active_rows if x in missing_rows]
+            # print('finded_rows: ', finded_rows)
+            # print('missing_rows: ', missing_rows)
+            if finded_rows:
+                neighbour.columns[i] = 1
+                neighbour.fitness += instance.columns[i].cost
+                for finded_row in finded_rows:
+                    missing_rows.remove(finded_row)
+                    neighbour.rows[finded_row]+=1
+
 
 def clear_rows(rows):
     "asd"
@@ -103,6 +108,6 @@ def update_rows(rows, column):
 def random_sol():
     "Genera una solucion random"
     list_solution = []
-    for i in range(1000):
+    for _ in range(1000):
         list_solution.append(randint(0, 1))
     return list_solution
