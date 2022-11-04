@@ -17,22 +17,22 @@ def tabu_search():
     objetive_funtion(instance, best_solution)
     print('Initial Rows: ', best_solution.rows)
     print('Initial Columns: ', best_solution.columns)
-    print('Initial Is covered: ', is_covered(best_solution.rows))
+    print('Initial Is covered: ', is_covered(best_solution.rows)[0])
     print('Initial Fitness :', best_solution.fitness)
     print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
     print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
-    flag = False
-    for i in range(600):
-        if flag:
-            flag = neighbour_analize(instance, best_solution, neighbour, '')
+    flag_repair = False
+    for i in range(500):
+        if flag_repair:
+            flag_repair = neighbour_analize(instance, best_solution, neighbour,1)
         else:
-            flag = neighbour_analize(instance, best_solution, neighbour, 1)
+            flag_repair = neighbour_analize(instance, best_solution, neighbour,0)
         # print(best_solution.rows)
         # print(rows)
     # print(best_solution.rows)
     print('Rows: ', best_solution.rows)
     print('Columns: ', best_solution.columns)
-    print('Is covered: ', is_covered(best_solution.rows))
+    print('Is covered: ', is_covered(best_solution.rows)[0])
     print('Fitness :', best_solution.fitness)
     #     pass
 
