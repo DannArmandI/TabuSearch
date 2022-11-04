@@ -29,7 +29,7 @@ class Instance:
         # print(Row)
         # print(Column)
         self.set_columns()
-        self.set_rows()
+        self.set_active_rows()
         # print(self.Columns[1].Index)
         # print(self.Columns[3].Index)
         # print(self.Columns[4].Index)
@@ -67,7 +67,7 @@ class Instance:
             if cont == self.column:
                 break
 
-    def set_rows(self):
+    def set_active_rows(self):
         " Clases para cargar y almacenar la instancia "
         for row in range(200):
             line = self.instancia.readline()
@@ -79,10 +79,9 @@ class Instance:
                 elements = line.split(' ')
                 for element in elements:
                     if element.isdigit():
-                        row_aux = row+1
                         cont = cont+1
                         self.columns[int(element) -
-                                     1].active_rows.append(row_aux)
+                                     1].active_rows.append(row)
                         # print('Adding Row ', row, ' To ', element)
 
     def print_instance(self):
