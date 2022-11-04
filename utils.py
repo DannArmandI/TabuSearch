@@ -14,8 +14,9 @@ class Solution:
         self.rows = aux.rows.copy()
         self.fitness = aux.fitness
 
-class TabuList:
-    ""
+class TabuListElement:
+    "Clase que representa un elemento en la lista Tabu"
+    
 
 def neighbour_analize(instance, best_solution, neighbour, repair_flag):
     "Analiza los vecinos de una solucion determinada"

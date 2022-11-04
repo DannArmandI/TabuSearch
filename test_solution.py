@@ -1,12 +1,12 @@
-"Genera una solucion random"
+"Aqui se puede probar una solucion en caso de desconfienza"
 
 import time
 from instance import Instance
 from utils import is_covered, neighbour_analize, objetive_funtion, random_sol, Solution
 
 
-def example():
-    "Aqui inicia el proyecto"
+def test_solution():
+    "Aqui inicia el test"
     instance = Instance()
     instance.set_instance()
     best_solution = Solution()
@@ -23,6 +23,6 @@ def example():
 
 if __name__ == "__main__":
     begin = time.time()
-    example()
+    test_solution()
     end = time.time()
     print('Execution Time: ', "{:.0f}".format(end-begin), 'seg')
