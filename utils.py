@@ -41,7 +41,6 @@ def neighbour_analize(instance, best_solution, neighbour, repair_flag):
             break
 
     if local_best.columns == best_solution.columns:
-        # print('bucle encontrado')
         return True
     best_solution.set(local_best)
 

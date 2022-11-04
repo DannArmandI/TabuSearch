@@ -29,9 +29,6 @@ def tabu_search():
         else:
             flag_repair = neighbour_analize(
                 instance, best_solution, neighbour, 0)
-        # print(best_solution.rows)
-        # print(rows)
-    # print(best_solution.rows)
     print('Rows: ', best_solution.rows)
     print('Columns: ', best_solution.columns)
     print('Is covered: ', is_covered(best_solution.rows)[0])
