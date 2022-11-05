@@ -75,7 +75,6 @@ def is_covered(rows):
     for i in range(200):
         if rows[i] == 0:
             missing_rows.append(i)
-
     if missing_rows:
         flag = False
     return flag, missing_rows
