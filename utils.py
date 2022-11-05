@@ -16,9 +16,43 @@ class Solution:
 
 class TabuListElement:
     "Clase que representa un elemento en la lista Tabu"
+    column_index=int()
+    count=5
     
+    def decrease_count(self):
+        "as"
+        self.count -= 1
+        
+class TabuList:
+    
+    tabu_list=[TabuListElement()]
+    
+    def __init__(self) -> None:
+        self.tabu_list.clear()
+    
+    def add(self, element):
+        tabu_element = TabuListElement()
+        tabu_element.column_index=element
+        self.tabu_list.append(tabu_element)
+        
+    def search_element(self, element):
+        for tabu_element in self.tabu_list:
+            if tabu_element.column_index==element:
+                return True
+        return False    
+    
+    def decrease_count_list(self):
+        copy = self.tabu_list.copy()
+        for tabu_element in copy:
+            tabu_element.decrease_count()
+            if not tabu_element.count:
+                self.tabu_list.remove(tabu_element)
+                            
+    def print_list(self):
+        for tabu_element in self.tabu_list:
+            print(tabu_element.column_index,' ',tabu_element.count)
 
-def neighbour_analize(instance, best_solution, neighbour, repair_flag):
+def neighbour_analize(instance, best_solution, neighbour, repair_flag ,tabu_list):
     "Analiza los vecinos de una solucion determinada"
     local_best = Solution()
     local_best.set(best_solution)
@@ -28,10 +62,11 @@ def neighbour_analize(instance, best_solution, neighbour, repair_flag):
             continue
         else:
             neighbour.columns[i] = 0
+            tabu_list.add(i)
         covered_flag, missing_rows = objetive_funtion(instance, neighbour)
         if not covered_flag:
             if repair_flag:
-                repair_solution(instance, neighbour, missing_rows)
+                repair_solution(instance, neighbour, missing_rows,tabu_list)
             else:
                 continue
         if local_best.fitness >= neighbour.fitness :
@@ -42,14 +77,15 @@ def neighbour_analize(instance, best_solution, neighbour, repair_flag):
     if local_best.columns == best_solution.columns:
         return True
     best_solution.set(local_best)
+    tabu_list.decrease_count_list()
 
 
-def repair_solution(instance, neighbour, missing_rows):
+def repair_solution(instance, neighbour, missing_rows,tabu_list):
     "Repara las solucion de manera simple"
     for (i, column) in enumerate(neighbour.columns):
         if not missing_rows:
             break
-        if column:
+        if column or tabu_list.search_element(i) :
             continue
         else:
             finded_rows = [
