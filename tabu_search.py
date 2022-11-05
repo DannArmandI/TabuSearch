@@ -19,14 +19,10 @@ def tabu_search():
     print('Initial Fitness :', best_solution.fitness)
     print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
     print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
-    flag_repair = False
-    for _ in range(550):
-        if flag_repair:
-            flag_repair = neighbour_analize(
-                instance, best_solution, neighbour, 1)
-        else:
-            flag_repair = neighbour_analize(
-                instance, best_solution, neighbour, 0)
+    for _ in range(480):
+        neighbour_analize(
+        instance, best_solution, neighbour, 1)
+
     print('Rows: ', best_solution.rows)
     print('Columns: ', best_solution.columns)
     print('Is covered: ', is_covered(best_solution.rows)[0])
