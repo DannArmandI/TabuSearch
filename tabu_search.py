@@ -4,6 +4,7 @@ import time
 from instance import Instance
 from utils import is_covered, neighbour_analize, objetive_funtion, random_sol, Solution , TabuList
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def tabu_search():
@@ -39,12 +40,15 @@ def tabu_search():
     print('Fitness :', best_solution.fitness)
     return y, x
 
+def render_grafic(y,x):
+    "Renderiza un grafico"
+    fig, ax = plt.subplots()
+    ax.plot(x, y)
+    plt.show()
 
 if __name__ == "__main__":
     begin = time.time()
     y,x=tabu_search()
     end = time.time()
     print('Execution Time: ', "{:.0f}".format(end-begin), 'seg')
-    fig, ax = plt.subplots()
-    ax.plot(x, y)
-    plt.show()
+    render_grafic(y,x)
