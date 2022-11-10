@@ -1,5 +1,8 @@
 "Funciones para poder ejecutar Tabu Search"
 from random import randint
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
 
 
 class Solution:
@@ -14,45 +17,48 @@ class Solution:
         self.rows = aux.rows.copy()
         self.fitness = aux.fitness
 
+
 class TabuListElement:
     "Clase que representa un elemento en la lista Tabu"
-    column_index=int()
-    count=5
-    
+    column_index = int()
+    count = 5
+
     def decrease_count(self):
         "as"
         self.count -= 1
-        
+
+
 class TabuList:
-    
-    tabu_list=[TabuListElement()]
-    
+
+    tabu_list = [TabuListElement()]
+
     def __init__(self) -> None:
         self.tabu_list.clear()
-    
+
     def add(self, element):
         tabu_element = TabuListElement()
-        tabu_element.column_index=element
+        tabu_element.column_index = element
         self.tabu_list.append(tabu_element)
-        
+
     def search_element(self, element):
         for tabu_element in self.tabu_list:
-            if tabu_element.column_index==element:
+            if tabu_element.column_index == element:
                 return True
-        return False    
-    
+        return False
+
     def decrease_count_list(self):
         copy = self.tabu_list.copy()
         for tabu_element in copy:
             tabu_element.decrease_count()
             if not tabu_element.count:
                 self.tabu_list.remove(tabu_element)
-                            
+
     def print_list(self):
         for tabu_element in self.tabu_list:
-            print(tabu_element.column_index,' ',tabu_element.count)
+            print(tabu_element.column_index, ' ', tabu_element.count)
 
-def neighbour_analize(instance, best_solution, neighbour, repair_flag ,tabu_list):
+
+def neighbour_analize(instance, best_solution, neighbour, repair_flag, tabu_list):
     "Analiza los vecinos de una solucion determinada"
     local_best = Solution()
     local_best.set(best_solution)
@@ -66,10 +72,10 @@ def neighbour_analize(instance, best_solution, neighbour, repair_flag ,tabu_list
         covered_flag, missing_rows = objetive_funtion(instance, neighbour)
         if not covered_flag:
             if repair_flag:
-                repair_solution(instance, neighbour, missing_rows,tabu_list)
+                repair_solution(instance, neighbour, missing_rows, tabu_list)
             else:
                 continue
-        if local_best.fitness >= neighbour.fitness :
+        if local_best.fitness >= neighbour.fitness:
             local_best.set(neighbour)
             if repair_flag:
                 continue
@@ -80,12 +86,12 @@ def neighbour_analize(instance, best_solution, neighbour, repair_flag ,tabu_list
     tabu_list.decrease_count_list()
 
 
-def repair_solution(instance, neighbour, missing_rows,tabu_list):
+def repair_solution(instance, neighbour, missing_rows, tabu_list):
     "Repara las solucion de manera simple"
     for (i, column) in enumerate(neighbour.columns):
         if not missing_rows:
             break
-        if column or tabu_list.search_element(i) :
+        if column or tabu_list.search_element(i):
             continue
         else:
             finded_rows = [
@@ -95,14 +101,41 @@ def repair_solution(instance, neighbour, missing_rows,tabu_list):
                 neighbour.fitness += instance.columns[i].cost
                 for finded_row in finded_rows:
                     missing_rows.remove(finded_row)
-                    neighbour.rows[finded_row]+=1
+                    neighbour.rows[finded_row] += 1
 
+
+def repair_solution_complex(instance, neighbour, missing_rows):
+    "asdasd"
+    while missing_rows:
+        best_trade_off = 10000
+        best_column_index = 0
+        best_finded_rows = []
+        for (i, column) in enumerate(neighbour.columns):
+            if not missing_rows:
+                break
+            if column:
+                continue
+            else:
+                finded_rows = [
+                    x for x in instance.columns[i].active_rows if x in missing_rows]
+                if finded_rows:
+                    trade_off = instance.columns[i].cost/len(finded_rows)
+                    if best_trade_off >= trade_off:
+                        best_trade_off = trade_off
+                        best_column_index = i
+                        best_finded_rows = finded_rows
+        neighbour.columns[best_column_index] = 1
+        neighbour.fitness += instance.columns[best_column_index].cost
+        for finded_row in best_finded_rows:
+            missing_rows.remove(finded_row)
+            neighbour.rows[finded_row] += 1
 
 
 def clear_rows(rows):
     "Limpia las filas asociadas a una solucion"
     for i in range(200):
         rows[i] = 0
+
 
 def is_covered(rows):
     "Verifica si todas las restricciones estan cubiertas"
@@ -140,3 +173,16 @@ def random_sol():
     for _ in range(1000):
         list_solution.append(randint(0, 1))
     return list_solution
+
+
+def generate_chart(x, y, x2, y2):
+    "Genera un grafico apartir de 2 listas"
+    plt.figure(figsize=(25, 15), dpi=50, facecolor='w', edgecolor='k')
+    ax = plt.gca()
+    plt.plot(x, y, color='blue', label='Movimiento')
+    plt.plot(x2, y2, color='red', label='Movimiento + Reparaciones')
+    plt.title('Tabu Search para SCP', fontsize=20)
+    plt.ylabel('Valor Funcion Objetivo', fontsize=20)
+    plt.xlabel('N iteraciones', fontsize=15)
+    plt.legend()
+    plt.show()
