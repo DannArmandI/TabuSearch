@@ -52,4 +52,4 @@ Agradecemos tanto a Profesor, como Ayudante del curso Algoritmos Bio Inspirados,
 
 ## Créditos de Autor 
 
-[Dann Armand](dann.armand.i@mail.pucv.cl) & [Cristóbal Cáceres](cristobal.caceres.c@mail.pucv.cl)
+[Dann Armand](https://github.com/DannArmandI/) & [Cristóbal Cáceres](https://github.com/cristobal2209/)
